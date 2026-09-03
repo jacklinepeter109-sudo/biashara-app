@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biashara App</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#f3f6f4;
+  color:#222;
+}
+
+header{
+  background:#087f3f;
+  color:white;
+  padding:18px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+header h1{
+  font-size:23px;
+}
+
+header p{
+  margin-top:5px;
+  opacity:.9;
+}
+
+.container{
+  padding:15px;
+  max-width:600px;
+  margin:auto;
+}
+
+.balance{
+  background:white;
+  border-radius:15px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 3px 10px #0001;
+}
+
+.balance small{
+  color:#777;
+}
+
+.balance h2{
+  color:#087f3f;
+  margin-top:6px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.card{
+  background:white;
+  padding:18px 12px;
+  border-radius:15px;
+  text-align:center;
+  box-shadow:0 3px 10px #0001;
+  cursor:pointer;
+}
+
+.card .icon{
+  font-size:30px;
+  margin-bottom:8px;
+}
+
+.card h3{
+  font-size:16px;
+}
+
+.card p{
+  font-size:12px;
+  color:#777;
+  margin-top:5px;
+}
+
+.section{
+  display:none;
+}
+
+.section.active{
+  display:block;
+}
+
+.back{
+  background:#087f3f;
+  color:white;
+  border:0;
+  padding:10px 16px;
+  border-radius:10px;
+  margin-bottom:15px;
+}
+
+.title{
+  margin-bottom:15px;
+}
+
+.form{
+  background:white;
+  padding:16px;
+  border-radius:15px;
+  box-shadow:0 3px 10px #0001;
+}
+
+label{
+  display:block;
+  margin-top:12px;
+  font-weight:bold;
+  font-size:14px;
+}
+
+input,select{
+  width:100%;
+  padding:13px;
+  margin-top:6px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  font-size:15px;
+}
+
+button.main{
+  width:100%;
+  margin-top:16px;
+  padding:14px;
+  background:#087f3f;
+  color:white;
+  border:0;
+  border-radius:10px;
+  font-size:16px;
+  font-weight:bold;
+}
+
+.product{
+  background:white;
+  margin-bottom:12px;
+  padding:15px;
+  border-radius:14px;
+  box-shadow:0 3px 10px #0001;
+}
+
+.product h3{
+  color:#087f3f;
+}
+
+.product .price{
+  font-weight:bold;
+  margin-top:6px;
+}
+
+.product button{
+  background:#087f3f;
+  color:white;
+  border:0;
+  padding:9px 14px;
+  border-radius:8px;
+  margin-top:10px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+th,td{
+  padding:11px;
+  border-bottom:1px solid #eee;
+  text-align:left;
+  font-size:13px;
+}
+
+th{
+  background:#087f3f;
+  color:white;
+}
+
+.total{
+  background:#e7f7ed;
+  padding:15px;
+  border-radius:12px;
+  margin-top:15px;
+  font-weight:bold;
+}
+
+nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 4px;
+  box-shadow:0 -3px 12px #0002;
+  z-index:20;
+}
+
+nav button{
+  background:none;
+  border:0;
+  color:#666;
+  font-size:11px;
+}
+
+nav button span{
+  display:block;
+  font-size:22px;
+  margin-bottom:3px;
+}
+
+.empty{
+  text-align:center;
+  padding:30px;
+  color:#777;
+}
+
+footer{
+  height:75px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🌱 BIASHARA APP</h1>
+  <p>Usimamizi wa biashara yako</p>
+</header>
+
+<div class="container">
+
+<!-- HOME -->
+<div id="home" class="section active">
+
+  <div class="balance">
+    <small>Mauzo ya Leo</small>
+    <h2 id="todaySales">TSh 0</h2>
+    <p id="salesCount">Mauzo 0</p>
+  </div>
+
+  <div class="grid">
+
+    <div class="card" onclick="showSection('sales')">
+      <div class="icon">💰</div>
+      <h3>Mauzo</h3>
+      <p>Rekodi mauzo</p>
+    </div>
+
+    <div class="card" onclick="showSection('products')">
+      <div class="icon">🥛</div>
+      <h3>Bidhaa</h3>
+      <p>Angalia bidhaa</p>
+    </div>
+
+    <div class="card" onclick="showSection('customers')">
+      <div class="icon">👥</div>
+      <h3>Wateja</h3>
+      <p>Nyumbani & Hotel</p>
+    </div>
+
+    <div class="card" onclick="showSection('expenses')">
+      <div class="icon">💸</div>
+      <h3>Matumizi</h3>
+      <p>Rekodi matumizi</p>
+    </div>
+
+    <div class="card" onclick="showSection('stock')">
+      <div class="icon">📦</div>
+      <h3>Stock</h3>
+      <p>Bidhaa zilizopo</p>
+    </div>
+
+    <div class="card" onclick="showSection('reports')">
+      <div class="icon">📊</div>
+      <h3>Ripoti</h3>
+      <p>Muhtasari wa biashara</p>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- MAUZO -->
+<div id="sales" class="section">
+
+<button class="back" onclick="showSection('home')">← Rudi</button>
+
+<h2 class="title">💰 Rekodi Mauzo</h2>
+
+<div class="form">
+
+<label>Bidhaa</label>
+<select id="saleProduct">
+<option value="Maziwa Mtindi">Maziwa Mtindi</option>
+<option value="Maziwa Fresh">Maziwa Fresh</option>
+<option value="Mchicha">Mchicha</option>
+<option value="Matembele">Matembele</option>
+<option value="Chainizi">Chainizi</option>
+<option value="Land FOC 36">Land FOC 36</option>
+<option value="Bidhaa Nyingine">Bidhaa Nyingine</option>
+</select>
+
+<label>Idadi</label>
+<input type="number" id="saleQty" value="1" min="1">
+
+<label>Bei kwa moja (TSh)</label>
+<input type="number" id="salePrice" placeholder="Mfano 2000">
+
+<label>Mteja</label>
+<select id="saleCustomer">
+<option>Nyumbani</option>
+<option>Hotel</option>
+<option>Land FOC 36</option>
+<option>Mteja mwingine</option>
+</select>
+
+<button class="main" onclick="addSale()">💾 Hifadhi Mauzo</button>
+
+</div>
+
+<div id="salesList"></div>
+
+</div>
+
+
+<!-- BIDHAA -->
+<div id="products" class="section">
+
+<button class="back" onclick="showSection('home')">← Rudi</button>
+
+<h2 class="title">🥬 Bidhaa</h2>
+
+<div class="product">
+<h3>🥛 Maziwa Mtindi</h3>
+<p>Maziwa ya mtindi</p>
+<div class="price">Bei: TSh <span>—</span></div>
+</div>
+
+<div class="product">
+<h3>🥛 Maziwa Fresh</h3>
+<p>Maziwa fresh</p>
+<div class="price">Bei: TSh <span>—</span></div>
+</div>
+
+<div class="product">
+<h3>🥬 Mchicha</h3>
+<p>Mboga fresh</p>
+<div class="price">Bei: TSh <span>—</span></div>
+</div>
+
+<div class="product">
+<h3>🥬 Matembele</h3>
+<p>Mboga fresh</p>
+<div class="price">Bei: TSh <span>—</span></div>
+</div>
+
+<div class="product">
+<h3>🥬 Chainizi</h3>
+<p>Mboga fresh</p>
+<div class="price">Bei: TSh <span>—</span></div>
+</div>
+
+<div class="product">
+<h3>🚚 Land FOC 36</h3>
+<p>Sehemu ya usambazaji</p>
+<div class="price">Stock / Mauzo</div>
+</div>
+
+</div>
+
+
+<!-- WATEJA -->
+<div id="customers" class="section">
+
+<button class="back" onclick="showSection('home')">← Rudi</button>
+
+<h2 class="title">👥 Wateja</h2>
+
+<div class="form">
+
+<label>Jina la Mteja</label>
+<input id="customerName" placeholder="Mfano: Asha">
+
+<label>Aina ya Mteja</label>
+<select id="customerType">
+<option>Nyumbani</option>
+<option>Hotel</option>
+<option>Land FOC 36</option>
+</select>
+
+<label>Namba ya Simu</label>
+<input id="customerPhone" type="tel" placeholder="07XXXXXXXX">
+
+<button class="main" onclick="addCustomer()">➕ Ongeza Mteja</button>
+
+</div>
+
+<div id="customersList"></div>
+
+</div>
+
+
+<!-- MATUMIZI -->
+<div id="expenses" class="section">
+
+<button class="back" onclick="showSection('home')">← Rudi</button>
+
+<h2 class="title">💸 Matumizi</h2>
+
+<div class="form">
+
+<label>Jina la matumizi</label>
+<input id="expenseName" placeholder="Mfano: Usafiri">
+
+<label>Kiasi (TSh)</label>
+<input id="expenseAmount" type="number" placeholder="5000">
+
+<button class="main" onclick="addExpense()">💾 Hifadhi Matumizi</button>
+
+</div>
+
+<div id="expensesList"></div>
+
+</div>
+
+
+<!-- STOCK -->
+<div id="stock" class="section">
+
+<button class="back" onclick="showSection('home')">← Rudi</button>
+
+<h2 class="title">📦 Stock</h2>
+
+<div class="form">
+
+<label>Bidhaa</label>
+<select id="stockProduct">
+<option>Maziwa Mtindi</option>
+<option>Maziwa Fresh</option>
+<option>Mchicha</option>
+<option>Matembele</option>
+<option>Chainizi</option>
+<option>Land FOC 36</option>
+</select>
+
+<label>Ongeza Stock</label>
+<input id="stockQty" type="number" min="1" placeholder="Idadi">
+
+<button class="main" onclick="addStock()">➕ Ongeza Stock</button>
+
+</div>
+
+<div id="stockList"></div>
+
+</div>
+
+
+<!-- RIPOTI -->
+<div id="reports" class="section">
+
+<button class="back" onclick="showSection('home')">← Rudi</button>
+
+<h2 class="title">📊 Ripoti ya Biashara</h2>
+
+<table>
+<thead>
+<tr>
+<th>Kipengele</th>
+<th>Kiasi</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Jumla ya Mauzo</td>
+<td id="reportSales">TSh 0</td>
+</tr>
+
+<tr>
+<td>Jumla ya Matumizi</td>
+<td id="reportExpenses">TSh 0</td>
+</tr>
+
+<tr>
+<td>Faida iliyobaki</td>
+<td id="reportProfit">TSh 0</td>
+</tr>
+</tbody>
+</table>
+
+<div class="total">
+📈 Faida = Mauzo − Matumizi
+</div>
+
+<button class="main" onclick="clearData()">
+🗑️ Futa Data Zote
+</button>
+
+</div>
+
+<footer></footer>
+
+</div>
+
+
+<nav>
+<button onclick="showSection('home')">
+<span>🏠</span>Home
+</button>
+
+<button onclick="showSection('sales')">
+<span>💰</span>Mauzo
+</button>
+
+<button onclick="showSection('products')">
+<span>🥬</span>Bida
+</button>
+
+<button onclick="showSection('customers')">
+<span>👥</span>Wateja
+</button>
+
+<button onclick="showSection('reports')">
+<span>📊</span>Ripoti
+</button>
+</nav>
+
+
+<script>
+
+let sales = JSON.parse(localStorage.getItem("sales") || "[]");
+let customers = JSON.parse(localStorage.getItem("customers") || "[]");
+let expenses = JSON.parse(localStorage.getItem("expenses") || "[]");
+let stock = JSON.parse(localStorage.getItem("stock") || "{}");
+
+
+function money(number){
+  return Number(number).toLocaleString("en-US");
+}
+
+
+function save(){
+  localStorage.setItem("sales",JSON.stringify(sales));
+  localStorage.setItem("customers",JSON.stringify(customers));
+  localStorage.setItem("expenses",JSON.stringify(expenses));
+  localStorage.setItem("stock",JSON.stringify(stock));
+}
+
+
+function showSection(id){
+
+  document.querySelectorAll(".section")
+  .forEach(x=>x.classList.remove("active"));
+
+  document.getElementById(id).classList.add("active");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+  updateAll();
+}
+
+
+function addSale(){
+
+  let product=document.getElementById("saleProduct").value;
+  let qty=Number(document.getElementById("saleQty").value);
+  let price=Number(document.getElementById("salePrice").value);
+  let customer=document.getElementById("saleCustomer").value;
+
+  if(!price || qty<1){
+    alert("Weka idadi na bei kwanza.");
+    return;
+  }
+
+  sales.push({
+    product,
+    qty,
+    price,
+    total:qty*price,
+    customer,
+    date:new Date().toLocaleString()
+  });
+
+  save();
+
+  document.getElementById("salePrice").value="";
+
+  alert("Mauzo yamehifadhiwa ✅");
+
+  updateAll();
+}
+
+
+function addCustomer(){
+
+  let name=document.getElementById("customerName").value.trim();
+  let type=document.getElementById("customerType").value;
+  let phone=document.getElementById("customerPhone").value.trim();
+
+  if(!name){
+    alert("Weka jina la mteja.");
+    return;
+  }
+
+  customers.push({
+    name,
+    type,
+    phone,
+    date:new Date().toLocaleString()
+  });
+
+  save();
+
+  document.getElementById("customerName").value="";
+  document.getElementById("customerPhone").value="";
+
+  alert("Mteja ameongezwa ✅");
+
+  updateAll();
+}
+
+
+function addExpense(){
+
+  let name=document.getElementById("expenseName").value.trim();
+  let amount=Number(document.getElementById("expenseAmount").value);
+
+  if(!name || !amount){
+    alert("Weka jina na kiasi cha matumizi.");
+    return;
+  }
+
+  expenses.push({
+    name,
+    amount,
+    date:new Date().toLocaleString()
+  });
+
+  save();
+
+  document.getElementById("expenseName").value="";
+  document.getElementById("expenseAmount").value="";
+
+  alert("Matumizi yamehifadhiwa ✅");
+
+  updateAll();
+}
+
+
+function addStock(){
+
+  let product=document.getElementById("stockProduct").value;
+  let qty=Number(document.getElementById("stockQty").value);
+
+  if(!qty || qty<1){
+    alert("Weka idadi ya stock.");
+    return;
+  }
+
+  if(!stock[product]){
+    stock[product]=0;
+  }
+
+  stock[product]+=qty;
+
+  save();
+
+  document.getElementById("stockQty").value="";
+
+  alert("Stock imeongezwa ✅");
+
+  updateAll();
+}
+
+
+function updateAll(){
+
+  let totalSales=sales.reduce((sum,x)=>sum+x.total,0);
+  let totalExpenses=expenses.reduce((sum,x)=>sum+x.amount,0);
+  let profit=totalSales-totalExpenses;
+
+  document.getElementById("todaySales").innerText=
+    "TSh "+money(totalSales);
+
+  document.getElementById("salesCount").innerText=
+    "Mauzo "+sales.length;
+
+  document.getElementById("reportSales").innerText=
+    "TSh "+money(totalSales);
+
+  document.getElementById("reportExpenses").innerText=
+    "TSh "+money(totalExpenses);
+
+  document.getElementById("reportProfit").innerText=
+    "TSh "+money(profit);
+
+
+  let salesHTML="";
+
+  if(sales.length===0){
+
+    salesHTML='<div class="empty">Hakuna mauzo bado.</div>';
+
+  }else{
+
+    sales.slice().reverse().forEach(x=>{
+
+      salesHTML+=`
+      <div class="product">
+      <h3>${x.product}</h3>
+      <p>${x.qty} × TSh ${money(x.price)}</p>
+      <p>Mteja: ${x.customer}</p>
+      <strong>Jumla: TSh ${money(x.total)}</strong>
+      <small style="display:block;margin-top:6px;color:#777">
+      ${x.date}
+      </small>
+      </div>
+      `;
+
+    });
+
+  }
+
+  document.getElementById("salesList").innerHTML=salesHTML;
+
+
+  let customerHTML="";
+
+  if(customers.length===0){
+
+    customerHTML='<div class="empty">Hakuna wateja bado.</div>';
+
+  }else{
+
+    customers.slice().reverse().forEach(x=>{
+
+      customerHTML+=`
+      <div class="product">
+      <h3>👤 ${x.name}</h3>
+      <p>Aina: ${x.type}</p>
+      <p>📞 ${x.phone || "Hakuna namba"}</p>
+      </div>
+      `;
+
+    });
+
+  }
+
+  document.getElementById("customersList").innerHTML=customerHTML;
+
+
+  let expenseHTML="";
+
+  if(expenses.length===0){
+
+    expenseHTML='<div class="empty">Hakuna matumizi bado.</div>';
+
+  }else{
+
+    expenses.slice().reverse().forEach(x=>{
+
+      expenseHTML+=`
+      <div class="product">
+      <h3>💸 ${x.name}</h3>
+      <strong>TSh ${money(x.amount)}</strong>
+      <small style="display:block;margin-top:6px;color:#777">
+      ${x.date}
+      </small>
+      </div>
+      `;
+
+    });
+
+  }
+
+  document.getElementById("expensesList").innerHTML=expenseHTML;
+
+
+  let stockHTML="";
+
+  Object.keys(stock).forEach(product=>{
+
+    stockHTML+=`
+    <div class="product">
+    <h3>📦 ${product}</h3>
+    <p>Stock iliyopo:</p>
+    <strong>${stock[product]}</strong>
+    </div>
+    `;
+
+  });
+
+  if(!stockHTML){
+    stockHTML='<div class="empty">Hakuna stock iliyowekwa bado.</div>';
+  }
+
+  document.getElementById("stockList").innerHTML=stockHTML;
+}
+
+
+function clearData(){
+
+  if(confirm("Una uhakika unataka kufuta data zote?")){
+
+    sales=[];
+    customers=[];
+    expenses=[];
+    stock={};
+
+    save();
+    updateAll();
+
+    alert("Data zote zimefutwa.");
+  }
+}
+
+
+updateAll();
+
+</script>
+
+</body>
+</html>
